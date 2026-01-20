@@ -76,6 +76,8 @@ static struct {
 
     /* TODO: Add more commands */
     {"si", "[N] \n  Execute N instructions (default: 1), then stop", cmd_si},
+    {"info", "[REG]\n display register info"}
+
 };
 
 #define NR_CMD ARRLEN(cmd_table)

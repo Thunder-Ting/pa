@@ -16,6 +16,7 @@ void a() {
 }
 
 int main() {
-  a();
+  int a = 10;
+  printf("%d", a);
   return 0;
 }
