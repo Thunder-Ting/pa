@@ -120,20 +120,24 @@ static int cmd_si(char *args) {
 bool parse_ull(const char *s, uint64_t *out) {
   char *end;
   errno = 0;
+
   uint64_t v = strtoull(s, &end, 10);
+
   if (end == s) {
-    *out = 1;
-    return true;
+    printf("N must be number\n");
+    return false;
   }
+
   if (*end != '\0') {
     printf("N must be number\n");
     return false;
   }
 
   if (errno == ERANGE) {
-    printf("N is too lager\n");
+    printf("N is too large\n");
     return false;
   }
+
   *out = v;
   return true;
 }
