@@ -17,10 +17,13 @@
 #include "debug.h"
 #include "utils.h"
 #include <cpu/cpu.h>
+#include <errno.h>
 #include <isa.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <time.h>
 
@@ -99,19 +102,39 @@ static int cmd_help(char *args) {
   return 0;
 }
 
+// help for cmd_si
+bool parse_ull(const char *s, uint64_t *out);
+
 static int cmd_si(char *args) {
   char *arg = strtok(NULL, " ");
-
-  if (arg == NULL) {
-    // N equals 1
-  } else {
-    uint64_t inst_n = strtoull(arg, NULL, 10);
-    Log("inst_n = %" PRIu64, inst_n);
+  uint64_t inst_n;
+  if (parse_ull(arg, &inst_n)) {
     cpu_exec(inst_n);
   }
-
   return 0;
 }
+
+bool parse_ull(const char *s, uint64_t *out) {
+  char *end;
+  errno = 0;
+  uint64_t v = strtoull(s, &end, 10);
+  if (end == s) {
+    *out = 1;
+    return true;
+  }
+  if (*end != '\0') {
+    printf("N must be number\n");
+    return false;
+  }
+
+  if (errno == ERANGE) {
+    printf("N is too lager\n");
+    return false;
+  }
+  *out = v;
+  return true;
+}
+
 void sdb_set_batch_mode() { is_batch_mode = true; }
 
 void sdb_mainloop() {
