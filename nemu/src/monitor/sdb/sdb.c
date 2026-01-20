@@ -78,17 +78,12 @@ static struct {
 
     /* TODO: Add more commands */
     {"si", "[N] \n  Execute N instructions (default: 1), then stop", cmd_si},
-    {"info", "[REG]\n display register info\nREG can be:\
-     r general registers pc program counter<name>\
-         specific register(e.g.a0, ra) ",
-     cmd_info}
-
+    {"info", "[r | <reg>]\n display register info", cmd_info},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_help(char *args) {
-  /* extract the first argument */
+static int cmd_help(char *args) { /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
 
