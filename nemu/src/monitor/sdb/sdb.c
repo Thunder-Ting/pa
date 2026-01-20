@@ -107,10 +107,13 @@ bool parse_ull(const char *s, uint64_t *out);
 
 static int cmd_si(char *args) {
   char *arg = strtok(NULL, " ");
-  uint64_t inst_n;
-  if (parse_ull(arg, &inst_n)) {
-    cpu_exec(inst_n);
+  uint64_t inst_n = 1;
+  if (arg != NULL) {
+    if (!parse_ull(arg, &inst_n)) {
+      return 0;
+    }
   }
+  cpu_exec(inst_n);
   return 0;
 }
 
