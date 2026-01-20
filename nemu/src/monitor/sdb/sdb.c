@@ -14,7 +14,9 @@
  ***************************************************************************************/
 
 #include "sdb.h"
+#include "common.h"
 #include "debug.h"
+#include "memory/paddr.h"
 #include "utils.h"
 #include <cpu/cpu.h>
 #include <errno.h>
@@ -55,17 +57,16 @@ static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
 }
-
 static int cmd_q(char *args) {
   nemu_state.state = NEMU_QUIT;
   return -1;
 }
-
 static int cmd_help(char *args);
-
 static int cmd_si(char *args);
-
 static int cmd_info(char *args);
+static int cmd_x(char *args);
+
+bool parse_ull(const char *s, uint64_t *out);
 
 static struct {
   const char *name;
@@ -79,7 +80,7 @@ static struct {
     /* TODO: Add more commands */
     {"si", "[N] \n  Execute N instructions (default: 1), then stop", cmd_si},
     {"info", "[r | <reg>]\n  display register info", cmd_info},
-};
+    {"x", "[N] [Addr]  display memory data, N is number of Byte", cmd_x}};
 
 #define NR_CMD ARRLEN(cmd_table)
 
@@ -104,6 +105,32 @@ static int cmd_help(char *args) { /* extract the first argument */
   return 0;
 }
 
+static int cmd_x(char *args) {
+  char *num_str = strtok(args, " ");
+  if (num_str == NULL)
+    return 0;
+
+  uint64_t num;
+  parse_ull(num_str, &num);
+
+  char *addr_str = strtok(NULL, " ");
+  if (addr_str == NULL)
+    return 0;
+
+  uint64_t tmp;
+  parse_ull(addr_str, &tmp);
+  paddr_t addr = (paddr_t)tmp;
+
+  for (int i = 0; i < num; ++i) {
+    printf("%08u: ", addr);
+    for (int j = 0; j < 4; j++) {
+      printf("%x  ", paddr_read(addr, 1));
+    }
+    printf("\n");
+  }
+  return 0;
+}
+
 static int cmd_info(char *args) {
   char *arg = strtok(args, " ");
   if (arg == NULL)
@@ -116,9 +143,6 @@ static int cmd_info(char *args) {
   }
   return 0;
 }
-
-// help for cmd_si
-bool parse_ull(const char *s, uint64_t *out);
 
 static int cmd_si(char *args) {
   char *arg = strtok(NULL, " ");
@@ -133,21 +157,30 @@ static int cmd_si(char *args) {
 }
 
 bool parse_ull(const char *s, uint64_t *out) {
+  if (!s || !*s) {
+    printf("N must be number\n");
+    return false;
+  }
+
   char *end;
   errno = 0;
 
-  uint64_t v = strtoull(s, &end, 10);
+  // base = 0 自动识别 0x/0 前缀
+  uint64_t v = strtoull(s, &end, 0);
 
+  // 如果没有解析到任何字符
   if (end == s) {
     printf("N must be number\n");
     return false;
   }
 
+  // 如果后面还有非数字字符
   if (*end != '\0') {
     printf("N must be number\n");
     return false;
   }
 
+  // 检查溢出
   if (errno == ERANGE) {
     printf("N is too large\n");
     return false;
