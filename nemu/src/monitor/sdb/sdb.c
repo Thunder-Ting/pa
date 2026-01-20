@@ -20,6 +20,9 @@
 #include <isa.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdint.h>
+#include <string.h>
+#include <time.h>
 
 static int is_batch_mode = false;
 
@@ -97,7 +100,16 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_si(char *args) {
-  Log("什么都没有做");
+  char *arg = strtok(NULL, " ");
+
+  if (arg == NULL) {
+    // N equals 1
+  } else {
+    uint64_t inst_n = strtoull(arg, NULL, 10);
+    Log("inst_n = %" PRIu64, inst_n);
+    cpu_exec(inst_n);
+  }
+
   return 0;
 }
 void sdb_set_batch_mode() { is_batch_mode = true; }
