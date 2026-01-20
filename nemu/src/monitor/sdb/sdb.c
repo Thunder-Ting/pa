@@ -65,6 +65,8 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -76,7 +78,10 @@ static struct {
 
     /* TODO: Add more commands */
     {"si", "[N] \n  Execute N instructions (default: 1), then stop", cmd_si},
-    {"info", "[REG]\n display register info"}
+    {"info", "[REG]\n display register info\nREG can be:\
+     r general registers pc program counter<name>\
+         specific register(e.g.a0, ra) ",
+     cmd_info}
 
 };
 
@@ -103,6 +108,8 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
+static int cmd_info(char *args) { return 0; }
 
 // help for cmd_si
 bool parse_ull(const char *s, uint64_t *out);
