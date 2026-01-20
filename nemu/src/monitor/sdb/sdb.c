@@ -122,9 +122,10 @@ static int cmd_x(char *args) {
   paddr_t addr = (paddr_t)tmp;
 
   for (int i = 0; i < num; ++i) {
-    printf("0x%08x: ", addr + 4);
+    printf("0x%08x: ", addr);
     for (int j = 0; j < 4; j++) {
       printf("%x  ", paddr_read(addr, 1));
+      addr += 1;
     }
     printf("\n");
   }
