@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
-  Log("开始执行引擎");
   /* Start engine. */
   engine_start();
 

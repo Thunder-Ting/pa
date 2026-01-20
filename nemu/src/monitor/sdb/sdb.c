@@ -14,6 +14,7 @@
  ***************************************************************************************/
 
 #include "sdb.h"
+#include "debug.h"
 #include "utils.h"
 #include <cpu/cpu.h>
 #include <isa.h>
@@ -56,6 +57,8 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -66,7 +69,7 @@ static struct {
     {"q", "Exit NEMU", cmd_q},
 
     /* TODO: Add more commands */
-
+    {"si [N]", "Execute N instructions (default: 1), then stop", cmd_si},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -93,6 +96,10 @@ static int cmd_help(char *args) {
   return 0;
 }
 
+static int cmd_si(char *args) {
+  Log("什么都没有做");
+  return 0;
+}
 void sdb_set_batch_mode() { is_batch_mode = true; }
 
 void sdb_mainloop() {
