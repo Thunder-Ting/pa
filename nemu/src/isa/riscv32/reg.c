@@ -24,7 +24,7 @@ const char *regs[] = {"$0", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
 
 void isa_reg_display() {
   for (int i = 0; i < 32; i++) {
-    printf("%s\t%x\t", reg_name(i), gpr(i));
+    printf("%s\t0x%x\t\n", reg_name(i), gpr(i));
   }
 }
 
