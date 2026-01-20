@@ -111,6 +111,8 @@ static int cmd_info(char *args) {
 
   if (strcmp(arg, "r") == 0) {
     isa_reg_display();
+  } else {
+    isa_target_reg_display(arg);
   }
   return 0;
 }
