@@ -106,7 +106,9 @@ static int cmd_help(char *args) { /* extract the first argument */
 
 static int cmd_info(char *args) {
   char *arg = strtok(args, " ");
-  Log("%s", arg);
+  if (strcmp(arg, "r") == 0) {
+    isa_reg_display();
+  }
   return 0;
 }
 
