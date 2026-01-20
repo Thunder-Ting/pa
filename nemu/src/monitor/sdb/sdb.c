@@ -124,7 +124,7 @@ static int cmd_x(char *args) {
   for (int i = 0; i < num; ++i) {
     printf("0x%08x: ", addr);
     for (int j = 0; j < 4; j++) {
-      printf("%02x  ", paddr_read(addr, 1));
+      printf("0x%02x  ", paddr_read(addr, 1));
       addr += 1;
     }
     printf("\n");
