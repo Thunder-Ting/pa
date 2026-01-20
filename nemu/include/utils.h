@@ -19,8 +19,13 @@
 #include <common.h>
 
 // ----------- state -----------
-
-enum { NEMU_RUNNING, NEMU_STOP, NEMU_END, NEMU_ABORT, NEMU_QUIT };
+enum {
+  NEMU_RUNNING, // 正在执行指令
+  NEMU_STOP,    // 被人为暂停（monitor / single-step）
+  NEMU_END,     // 程序正常结束（good trap / bad trap）
+  NEMU_ABORT,   // 模拟器内部错误（assert / 未实现指令）
+  NEMU_QUIT     // 用户主动退出 NEMU
+};
 
 typedef struct {
   int state;
