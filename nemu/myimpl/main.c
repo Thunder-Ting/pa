@@ -1,16 +1,8 @@
 #include "tools.h"
 #include <stdio.h>
 
+#define LOG(format, ...) printf(format, ##__VA_ARGS__)
 int main() {
-  char buf[] = "  a,b,,c,d  ";
-  char *saveptr = NULL;
-  char *token;
-
-  token = strtok_m_r(buf, ", ", &saveptr);
-  while (token) {
-    printf("[%s]\n", token);
-    token = strtok_m_r(NULL, ", ", &saveptr);
-  }
-
+  LOG("Hello %d", 3);
   return 0;
 }
