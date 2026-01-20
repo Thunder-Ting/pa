@@ -24,14 +24,14 @@ const char *regs[] = {"$0", "ra", "sp",  "gp",  "tp", "t0", "t1", "t2",
 
 void isa_reg_display() {
   for (int i = 0; i < 32; i++) {
-    printf("%s\t0x%x\t\n", reg_name(i), gpr(i));
+    printf("%s\t0x%x\t%u\n", reg_name(i), gpr(i), gpr(i));
   }
 }
 
 void isa_target_reg_display(char *name) {
   for (int i = 0; i < 32; i++) {
     if (strcmp(name, reg_name(i)) == 0)
-      printf("%s\t0x%x\t\n", name, gpr(i));
+      printf("%s\t0x%x\t%u\n", name, gpr(i), gpr(i));
   }
 }
 
