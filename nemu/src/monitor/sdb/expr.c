@@ -116,12 +116,12 @@ static bool make_token(char *e) {
           tokens[nr_token].str[substr_len] = '\0';
           nr_token++;
           break;
-        // case TK_NOTYPE:
-        //   tokens[nr_token].type = rules[i].token_type;
-        //   memcpy(tokens[i].str, substr_start, substr_len);
-        //   tokens[nr_token].str[substr_len] = '\0';
-        //   nr_token++;
-        //   break;
+        case TK_NOTYPE:
+          // tokens[nr_token].type = rules[i].token_type;
+          // memcpy(tokens[i].str, substr_start, substr_len);
+          // tokens[nr_token].str[substr_len] = '\0';
+          // nr_token++;
+          break;
         default:
           perror("no rules");
         }
