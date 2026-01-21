@@ -1,6 +1,6 @@
 // #include "tools.h"
+#include <regex.h>
 #include <stdio.h>
-
 #define LOG(format, ...) printf(format, ##__VA_ARGS__)
 // int main() {
 //   LOG("Hello %d\n", 3);
@@ -15,8 +15,23 @@ void a() {
   LOG("%s", CONACT(a, b));
 }
 
+int test() {
+  regex_t reg;
+  const char *text = "3*5";
+
+  regcomp(&reg, "\\*", REG_EXTENDED);
+
+  if (regexec(&reg, text, 0, NULL, 0) == 0) {
+    printf("found '*'\n");
+  } else {
+    printf("not found\n");
+  }
+
+  regfree(&reg);
+  return 0;
+}
+
 int main() {
-  int a = 10;
-  printf("%d", a);
+  test();
   return 0;
 }
