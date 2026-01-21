@@ -108,8 +108,14 @@ static int cmd_help(char *args) { /* extract the first argument */
 }
 
 static int cmd_p(char *args) {
-  bool success;
-  expr(args, &success);
+  bool success = true;
+  word_t val = expr(args, &success);
+  if (!success) {
+    printf("Bad expression\n");
+    return -1;
+  }
+  printf("%u\n", val);
+
   return 0;
 }
 
