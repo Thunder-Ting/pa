@@ -25,7 +25,7 @@ enum {
   TK_EQ,
 
   /* TODO: Add more token types */
-  TK_MUL,
+  TK_NUM,
 };
 
 static struct rule {
@@ -37,10 +37,14 @@ static struct rule {
      * Pay attention to the precedence level of different rules.
      */
 
-    {" +", TK_NOTYPE}, // spaces
-    {"\\+", '+'},      // plus
-    {"==", TK_EQ},     // equal
-    {"\\*", TK_MUL},   // multiple
+    {" +", TK_NOTYPE},  // spaces
+    {"\\+", '+'},       // plus
+    {"==", TK_EQ},      // equal
+    {"\\*", '*'},       // mul
+    {"-", '-'},         // negtive
+    {"[0-9]+", TK_NUM}, // number
+    {"\\(", '('},       // left parenthesis
+    {"\\)", ')'},       // right parenthesis
 };
 
 #define NR_REGEX ARRLEN(rules)

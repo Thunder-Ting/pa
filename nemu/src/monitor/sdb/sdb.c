@@ -65,7 +65,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_info(char *args);
 static int cmd_x(char *args);
-
+static int cmd_p(char *args);
 bool parse_ull(const char *s, uint64_t *out);
 
 static struct {
@@ -80,7 +80,9 @@ static struct {
     /* TODO: Add more commands */
     {"si", "[N] \n  Execute N instructions (default: 1), then stop", cmd_si},
     {"info", "[r | <reg>]\n  display register info", cmd_info},
-    {"x", "[N] [Addr]  display memory data, N is number of Byte", cmd_x}};
+    {"x", "[N] [Addr]  display memory data, N is number of Byte", cmd_x},
+    {"p", "expr", cmd_p},
+};
 
 #define NR_CMD ARRLEN(cmd_table)
 
@@ -102,6 +104,12 @@ static int cmd_help(char *args) { /* extract the first argument */
     }
     printf("Unknown command '%s'\n", arg);
   }
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  bool success;
+  expr(args, &success);
   return 0;
 }
 
