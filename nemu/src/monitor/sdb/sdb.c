@@ -121,14 +121,20 @@ static int cmd_x(char *args) {
   parse_ull(addr_str, &tmp);
   paddr_t addr = (paddr_t)tmp;
 
-  for (int i = 0; i < num; ++i) {
+  while (num > 0) {
     printf("0x%08x: ", addr);
-    for (int j = 0; j < 4; j++) {
-      printf("0x%02x  ", paddr_read(addr, 1));
-      addr += 1;
+
+    int n = num >= 8 ? 8 : num;
+
+    for (int i = 0; i < n; i++) {
+      printf("0x%02x ", paddr_read(addr, 1));
+      addr++;
     }
+
     printf("\n");
+    num -= n;
   }
+
   return 0;
 }
 
