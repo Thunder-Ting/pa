@@ -102,21 +102,29 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
         switch (rules[i].token_type) {
+
         case TK_NUM:
-          tokens[nr_token].type = rules[i].token_type;
+          tokens[nr_token].type = TK_NUM;
           memcpy(tokens[nr_token].str, substr_start, substr_len);
           tokens[nr_token].str[substr_len] = '\0';
           nr_token++;
           break;
+
         case '+':
+        case '*':
+        case '-':
+        case '(':
+        case ')':
           tokens[nr_token].type = rules[i].token_type;
-          tokens[nr_token].str[substr_len] = '\0';
+          tokens[nr_token].str[0] = '\0'; // 明确清空
           nr_token++;
           break;
+
         case TK_NOTYPE:
+          // skip spaces
           break;
+
         default:
           panic("unknown token type");
         }
